@@ -1,7 +1,5 @@
-// Messaggio di benvenuto automatico all'avvio
-window.addEventListener('DOMContentLoaded', () => {
-    addMessage("Ciao! 🌍 Sono **Visito**, il tuo assistente di viaggio personale. Dimmi, quale città del mondo vorresti scoprire oggi?", 'bot');
-});// Selezioniamo gli elementi dell'interfaccia
+// Messaggio di benvenuto unico all'avvio
+addMessage("Ciao! 🌍 Sono **Visito**, il tuo assistente di viaggio personale. Dimmi, quale città del mondo vorresti scoprire oggi?", 'bot');// Selezioniamo gli elementi dell'interfaccia
 const sendBtn = document.getElementById('send-btn');
 const userInput = document.getElementById('user-input');
 const chatBox = document.getElementById('chat-box');
