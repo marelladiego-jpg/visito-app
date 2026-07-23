@@ -1,64 +1,64 @@
-// Messaggio di benvenuto unico all'avvio
-
+// 1. Selezioniamo gli elementi dall'HTML
 const sendBtn = document.getElementById('send-btn');
 const userInput = document.getElementById('user-input');
 const chatBox = document.getElementById('chat-box');
 
-// Database di conoscenze locale per Visito
+// 2. Database di risposte locali
 const destinazioni = {
-    "parigi": "🗼 **Parigi, Francia!**\nEcco 3 tappe imperdibili:\n1. Tour Eiffel e Giardini del Trocadéro\n2. Museo del Louvre\n3. Passeggiata a Montmartre e Sacré-Cœur.",
-    "roma": "🏛️ **Roma, Italia!**\nEcco cosa non puoi perderti:\n1. Colosseo e Fori Imperiali\n2. Pantheon e Fontana di Trevi\n3. Basilica di San Pietro.",
-    "londra": "🎡 **Londra, Regno Unito!**\nConsigli rapidi:\n1. Big Ben e London Eye\n2. British Museum (ingresso gratuito!)\n3. Passeggiata a Camden Market.",
-    "tokyo": "⛩️ **Tokyo, Giappone!**\nL'unione tra futuro e tradizione:\n1. Quartiere illuminato di Shibuya\n2. Tempio Senso-ji ad Asakusa\n3. Vista panoramica dalla Tokyo Skytree."
+    "parigi": "🗼 **Parigi, Francia!**\nEcco 3 tappe imperdibili:\n1. Tour Eiffel e Giardini del Trocadéro\n2. Museo del Louvre\n3. Passeggiata a Montmartre",
+    "roma": "🏛️ **Roma, Italia!**\nEcco cosa non puoi perderti:\n1. Colosseo e Fori Imperiali\n2. Fontana di Trevi\n3. Pantheon e Piazza Navona",
+    "londra": "🇬🇧 **Londra, Regno Unito!**\nConsigli rapidi:\n1. Big Ben e London Eye\n2. British Museum\n3. Passeggiata ad Hyde Park",
+    "tokyo": "⛩️ **Tokyo, Giappone!**\nL'unione tra futuro e tradizione:\n1. Quartiere illuminato di Shibuya\n2. Tempio Senso-ji a Asakusa\n3. Vista panoramica dalla Tokyo Tower"
 };
 
-// Funzione per aggiungere un messaggio alla chat
+// 3. Funzione per aggiungere messaggi a schermo
 function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', sender);
     
-    // Convertiamo i "vado a capo" in tag HTML <br> per formattare bene il testo
-    messageDiv.innerHTML = text.replace(/\n/g, '<br>');
-    
+    let formattedText = text
+        .replace(/\n/g, '<br>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+    messageDiv.innerHTML = formattedText;
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// Logica di risposta di Visito
-function generaRispostaBot(testoUtente) {
-    const testoLower = testoUtente.toLowerCase();
-    
-    // Cerca se l'utente ha nominato una delle nostre città
-    for (let citta in destinazioni) {
-        if (testoLower.includes(citta)) {
-            return destinazioni[citta];
-        }
+// 4. Funzione per gestire la risposta del Bot
+function rispondiUtente(testo) {
+    const testoPulito = testo.toLowerCase().trim();
+    let risposta = "";
+
+    if (destinazioni[testoPulito]) {
+        risposta = destinazioni[testoPulito];
+    } else {
+        risposta = `Che bella destinazione! ✈️ Al momento sto ancora studiando **${testo}**, ma presto saprò darti un itinerario completo! Prova a chiedermi di **Parigi**, **Roma**, **Londra** o **Tokyo**!`;
     }
-    
-    // Risposta standard se la città non è ancora nel database
-    return `🌍 **${testoUtente}** sembra una meta fantastica!\nAl momento sto aggiornando la mia mappa, ma ti consiglio di verificare i voli migliori per questa destinazione! ✈️`;
+
+    addMessage(risposta, 'bot');
 }
 
-// Funzione principale per gestire l'invio del messaggio
+// 5. Funzione principale di invio del messaggio
 function sendMessage() {
     const text = userInput.value.trim();
     if (text === '') return;
 
-    // 1. Mostra il messaggio dell'utente
     addMessage(text, 'user');
     userInput.value = '';
 
-    // 2. Risposta intelligente del Bot dopo 800ms
     setTimeout(() => {
-        const risposta = generaRispostaBot(text);
-        addMessage(risposta, 'bot');
-    }, 800);
+        rispondiUtente(text);
+    }, 600);
 }
 
-// Eventi tastiera e click
+// 6. Eventi per bottone e tasto Invio
 sendBtn.addEventListener('click', sendMessage);
 userInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         sendMessage();
     }
-})addMessage("Ciao! 🌍 Sono **Visito**, il tuo assistente di viaggio personale. Dimmi, quale città del mondo vorresti scoprire oggi?", 'bot');
+});
+
+// 7. Messaggio di benvenuto all'avvio (in fondo a tutto!)
+addMessage("Ciao! 🌍 Sono **Visito**, il tuo assistente di viaggio personale. Dimmi, quale città del mondo vorresti scoprire oggi?", 'bot');
