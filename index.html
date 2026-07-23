@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html lang="it">
-<link rel="stylesheet" href="style.css"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visito - Assistente di Viaggio</title>
-  <link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visito - Assistente di Viaggio</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="chat-container">
-    <header>
-      <h1>✈️ Visito</h1>
-      <p>Il tuo pianificatore di itinerari intelligente</p>
-    </header>
+    <div class="chat-container">
+        <header class="chat-header">
+            <h1>✈️ Visito</h1>
+            <p>Il tuo pianificatore di itinerari intelligente</p>
+        </header>
 
-    <!-- Qui compariranno i messaggi della chat -->
-    <div id="chat-box" class="chat-box">
+        <div id="chat-box" class="chat-box"></div>
+
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Scrivi una città o una destinazione...">
+            <button id="send-btn">Invia</button>
+        </div>
     </div>
 
-    <!-- Area dove scriverà l'utente -->
-    <div class="input-container">
-      <input type="text" id="user-input" placeholder="Scrivi una città o una destinazione...">
-      <button id="send-btn">Invia</button>
-    </div>
-  </div>
-<script src="script.js"></script></body>
+    <script src="script.js"></script>
+</body>
 </html>
