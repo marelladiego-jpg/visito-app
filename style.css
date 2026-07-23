@@ -1,102 +1,130 @@
-/* Stile Generale della Pagina */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f4f8;
+/* Reset di base e font moderno */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    padding: 15px;
 }
 
-/* Contenitore Principale della Chat */
+/* Contenitore principale della chat */
 .chat-container {
+    background: rgba(255, 255, 255, 0.95);
     width: 100%;
     max-width: 450px;
-    height: 80vh;
-    background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    height: 90vh;
+    max-height: 650px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     overflow: hidden;
 }
 
 /* Header dell'App */
-header {
-    background-color: #0077ff;
+.chat-header {
+    background: linear-gradient(135deg, #007bf2, #00c6ff);
     color: white;
-    padding: 16px;
+    padding: 20px;
     text-align: center;
-    font-weight: bold;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 1.4rem;
+.chat-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
-/* Area dei Messaggi */
+.chat-header p {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-top: 3px;
+}
+
+/* Finestra messaggi */
 .chat-box {
     flex: 1;
-    padding: 16px;
+    padding: 20px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    background-color: #f8f9fa;
 }
 
-/* Stile dei Messaggi */
+/* Bolle dei messaggi */
 .message {
     max-width: 80%;
     padding: 12px 16px;
-    border-radius: 12px;
-    line-height: 1.4;
+    border-radius: 18px;
     font-size: 0.95rem;
+    line-height: 1.4;
+    word-wrap: break-word;
 }
 
-.message.bot {
-    background-color: #e9ecef;
-    color: #333;
-    align-self: flex-start;
-    border-bottom-left-radius: 2px;
-}
-
+/* Messaggio dell'Utente */
 .message.user {
-    background-color: #0077ff;
-    color: white;
     align-self: flex-end;
-    border-bottom-right-radius: 2px;
+    background: #007bf2;
+    color: white;
+    border-bottom-right-radius: 4px;
 }
 
-/* Area di Input in Basso */
-.input-container {
+/* Messaggio di Visito (Bot) */
+.message.bot {
+    align-self: flex-start;
+    background: white;
+    color: #333;
+    border: 1px solid #e0e0e0;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Area di input in basso */
+.input-area {
     display: flex;
-    padding: 12px;
-    border-top: 1px solid #e0e0e0;
-    background-color: #ffffff;
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #eee;
+    gap: 10px;
 }
 
-.input-container input {
+input[type="text"] {
     flex: 1;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    padding: 12px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 25px;
     outline: none;
     font-size: 0.95rem;
+    transition: border 0.2s;
 }
 
-.input-container button {
-    margin-left: 8px;
-    padding: 12px 18px;
-    background-color: #0077ff;
+input[type="text"]:focus {
+    border-color: #007bf2;
+}
+
+button {
+    background: #007bf2;
     color: white;
     border: none;
-    border-radius: 8px;
-    cursor: pointer;
+    padding: 12px 20px;
+    border-radius: 25px;
     font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
 }
 
-.input-container button:hover {
-    background-color: #005bb5;
+button:hover {
+    background: #005bb5;
+}
+
+button:active {
+    transform: scale(0.95);
 }
