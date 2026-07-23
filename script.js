@@ -60,5 +60,7 @@ userInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         sendMessage();
     }
+});// Messaggio di benvenuto automatico all'avvio
+window.addEventListener('DOMContentLoaded', () => {
+    addMessage("Ciao! 🌍 Sono **Visito**, il tuo assistente di viaggio personale. Dimmi, quale città del mondo vorresti scoprire oggi?", 'bot');
 });
-   
