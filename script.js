@@ -1,15 +1,17 @@
-// 1. Selezioniamo gli elementi dall'HTML
+// 1. Recupera la chiave salvata nel browser, oppure la chiede se non è presente
+let API_KEY = localStorage.getItem('VISITO_API_KEY');
+
+if (!API_KEY) {
+    API_KEY = prompt("Inserisci la tua chiave API di Gemini per attivare Visito:");
+    if (API_KEY) {
+        localStorage.setItem('VISITO_API_KEY', API_KEY);
+    }
+}
+
+// 2. Selezioniamo gli elementi dall'HTML
 const sendBtn = document.getElementById('send-btn');
 const userInput = document.getElementById('user-input');
 const chatBox = document.getElementById('chat-box');
-
-// 2. Database di risposte locali
-const destinazioni = {
-    "parigi": "🗼 **Parigi, Francia!**\nEcco 3 tappe imperdibili:\n1. Tour Eiffel e Giardini del Trocadéro\n2. Museo del Louvre\n3. Passeggiata a Montmartre",
-    "roma": "🏛️ **Roma, Italia!**\nEcco cosa non puoi perderti:\n1. Colosseo e Fori Imperiali\n2. Fontana di Trevi\n3. Pantheon e Piazza Navona",
-    "londra": "🇬🇧 **Londra, Regno Unito!**\nConsigli rapidi:\n1. Big Ben e London Eye\n2. British Museum\n3. Passeggiata ad Hyde Park",
-    "tokyo": "⛩️ **Tokyo, Giappone!**\nL'unione tra futuro e tradizione:\n1. Quartiere illuminato di Shibuya\n2. Tempio Senso-ji a Asakusa\n3. Vista panoramica dalla Tokyo Tower"
-};
 
 // 3. Funzione per aggiungere messaggi a schermo
 function addMessage(text, sender) {
@@ -25,18 +27,45 @@ function addMessage(text, sender) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// 4. Funzione per gestire la risposta del Bot
-function rispondiUtente(testo) {
-    const testoPulito = testo.toLowerCase().trim();
-    let risposta = "";
+// 4. Funzione per chiamare l'API di Gemini
+async function rispondiUtente(testo) {
+    const loadingDiv = document.createElement('div');
+    loadingDiv.classList.add('message', 'bot');
+    loadingDiv.innerText = "Visito sta pensando...";
+    chatBox.appendChild(loadingDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
 
-    if (destinazioni[testoPulito]) {
-        risposta = destinazioni[testoPulito];
-    } else {
-        risposta = `Che bella destinazione! ✈️ Al momento sto ancora studiando **${testo}**, ma presto saprò darti un itinerario completo! Prova a chiedermi di **Parigi**, **Roma**, **Londra** o **Tokyo**!`;
+    const promptSistema = `Sei Visito, un assistente di viaggio entusiasta, esperto e sintetico.
+L'utente ti chiederà informazioni su una destinazione o un itinerario.
+Rispondi in modo chiaro, usando elenchi puntati ed emoji, dando i 3-4 consigli/tappe principali per la destinazione richiesta: "${testo}"`;
+
+    try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{ text: promptSistema }]
+                }]
+            })
+        });
+
+        const data = await response.json();
+        chatBox.removeChild(loadingDiv);
+
+        if (data.candidates && data.candidates[0].content.parts[0].text) {
+            const rispostaIA = data.candidates[0].content.parts[0].text;
+            addMessage(rispostaIA, 'bot');
+        } else {
+            addMessage("Ops! C'è stato un problema nel recuperare le informazioni. Riprova tra poco!", 'bot');
+        }
+    } catch (error) {
+        chatBox.removeChild(loadingDiv);
+        console.error(error);
+        addMessage("Errore di connessione. Verifica la tua chiave API.", 'bot');
     }
-
-    addMessage(risposta, 'bot');
 }
 
 // 5. Funzione principale di invio del messaggio
@@ -47,9 +76,7 @@ function sendMessage() {
     addMessage(text, 'user');
     userInput.value = '';
 
-    setTimeout(() => {
-        rispondiUtente(text);
-    }, 600);
+    rispondiUtente(text);
 }
 
 // 6. Eventi per bottone e tasto Invio
@@ -60,5 +87,5 @@ userInput.addEventListener('keydown', (event) => {
     }
 });
 
-// 7. Messaggio di benvenuto all'avvio (in fondo a tutto!)
+// 7. Messaggio di benvenuto all'avvio
 addMessage("Ciao! 🌍 Sono **Visito**, il tuo assistente di viaggio personale. Dimmi, quale città del mondo vorresti scoprire oggi?", 'bot');
