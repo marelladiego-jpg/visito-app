@@ -4,6 +4,8 @@ let API_KEY = localStorage.getItem('VISITO_API_KEY');
 if (!API_KEY) {
     API_KEY = prompt("Inserisci la tua chiave API di Gemini per attivare Visito:");
     if (API_KEY) {
+        // Puliamo la chiave da eventuali spazi presi per errore durante la copia
+        API_KEY = API_KEY.trim();
         localStorage.setItem('VISITO_API_KEY', API_KEY);
     }
 }
@@ -40,6 +42,7 @@ L'utente ti chiederà informazioni su una destinazione o un itinerario.
 Rispondi in modo chiaro, usando elenchi puntati ed emoji, dando i 3-4 consigli/tappe principali per la destinazione richiesta: "${testo}"`;
 
     try {
+        // Usiamo la versione API aggiornata
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
             headers: {
@@ -55,16 +58,19 @@ Rispondi in modo chiaro, usando elenchi puntati ed emoji, dando i 3-4 consigli/t
         const data = await response.json();
         chatBox.removeChild(loadingDiv);
 
-        if (data.candidates && data.candidates[0].content.parts[0].text) {
+        if (data.candidates && data.candidates[0] && data.candidates[0].content.parts[0].text) {
             const rispostaIA = data.candidates[0].content.parts[0].text;
             addMessage(rispostaIA, 'bot');
         } else {
-            addMessage("Ops! C'è stato un problema nel recuperare le informazioni. Riprova tra poco!", 'bot');
+            // Se c'è un errore di chiave API o risposta vuota
+            addMessage("Ops! C'è stato un errore con la chiave API. **Clicca qui sotto per reinserirla**.", 'bot');
+            localStorage.removeItem('VISITO_API_KEY'); // Cancella la chiave errata così la richiede al prossimo ricarico
         }
     } catch (error) {
         chatBox.removeChild(loadingDiv);
         console.error(error);
-        addMessage("Errore di connessione. Verifica la tua chiave API.", 'bot');
+        addMessage("Errore di connessione. La chiave API potrebbe non essere valida. Prova a ricaricare la pagina per re-inserirla.", 'bot');
+        localStorage.removeItem('VISITO_API_KEY');
     }
 }
 
