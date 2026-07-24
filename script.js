@@ -1,24 +1,13 @@
-// 1. Elementi HTML
+// Incolla qui tra le virgolette la stringa codificata che hai copiato da base64encode.org
+const CHIAVE_CODIFICATA = QVEuQWI4Uk42S0NjRDVPazdSeGhjNHZyWi1sLTFkOExRSjZrY25LclpBMnJxdHZ1SGY1a0E=;
+
+// Decodifica automatica della chiave
+const API_KEY = atob(CHIAVE_CODIFICATA);
+
 const sendBtn = document.getElementById('send-btn');
 const userInput = document.getElementById('user-input');
 const chatBox = document.getElementById('chat-box');
-const apiBtn = document.getElementById('api-btn');
 
-// 2. Gestione Chiave API
-let API_KEY = localStorage.getItem('VISITO_API_KEY') || "";
-
-function impostaChiaveAPI() {
-    const nuovaChiave = prompt("Incolla qui la tua chiave API di Google Gemini:", API_KEY);
-    if (nuovaChiave !== null) {
-        API_KEY = nuovaChiave.trim();
-        localStorage.setItem('VISITO_API_KEY', API_KEY);
-        alert("Chiave API salvata con successo!");
-    }
-}
-
-apiBtn.addEventListener('click', impostaChiaveAPI);
-
-// 3. Funzione per aggiungere messaggi a schermo
 function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('message', sender);
@@ -32,14 +21,7 @@ function addMessage(text, sender) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// 4. Chiamata all'API di Gemini
 async function rispondiUtente(testo) {
-    if (!API_KEY) {
-        addMessage("⚠️ Per favore clicca sul pulsante **🔑 Configura Chiave API** in alto per inserire la tua chiave prima di continuare!", 'bot');
-        impostaChiaveAPI();
-        return;
-    }
-
     const loadingDiv = document.createElement('div');
     loadingDiv.classList.add('message', 'bot');
     loadingDiv.innerText = "Visito sta pensando...";
@@ -53,13 +35,9 @@ Rispondi in modo chiaro, usando elenchi puntati ed emoji, dando i 3-4 consigli/t
     try {
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [{
-                    parts: [{ text: promptSistema }]
-                }]
+                contents: [{ parts: [{ text: promptSistema }] }]
             })
         });
 
@@ -70,32 +48,26 @@ Rispondi in modo chiaro, usando elenchi puntati ed emoji, dando i 3-4 consigli/t
             const rispostaIA = data.candidates[0].content.parts[0].text;
             addMessage(rispostaIA, 'bot');
         } else {
-            addMessage("Ops! La chiave API potrebbe non essere corretta o valida. Clicca sul pulsante **🔑 Configura Chiave API** in alto per reinserirla.", 'bot');
+            addMessage("Ops! C'è stato un errore di risposta dall'IA. Riprova tra poco!", 'bot');
         }
     } catch (error) {
         chatBox.removeChild(loadingDiv);
-        console.error(error);
-        addMessage("Errore di connessione con la chiave inserita. Clicca in alto su **🔑 Configura Chiave API** per rinnovarla.", 'bot');
+        addMessage("Errore di connessione con l'assistente IA.", 'bot');
     }
 }
 
-// 5. Invio messaggio
 function sendMessage() {
     const text = userInput.value.trim();
     if (text === '') return;
 
     addMessage(text, 'user');
     userInput.value = '';
-
     rispondiUtente(text);
 }
 
 sendBtn.addEventListener('click', sendMessage);
 userInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-        sendMessage();
-    }
+    if (event.key === 'Enter') sendMessage();
 });
 
-// 6. Messaggio di benvenuto
 addMessage("Ciao! 🌍 Sono **Visito**, il tuo assistente di viaggio personale. Dimmi, quale città del mondo vorresti scoprire oggi?", 'bot');
