@@ -28,7 +28,7 @@ async function rispondiUtente(testo) {
 
     try {
         // Chiamata al micro-server sicuro
-        const response = await fetch("/api/chat", {
+        const response = await fetch("//https://visito-app-iota.vercel.app/.vercel.app/api/chat", {, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
