@@ -1,166 +1,165 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Visito - Personal Planner</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visito - Assistente di Viaggio AI</title>
+  <style>
+    :root {
+      --primary: #2D6A4F;
+      --accent: #52B788;
+      --bg: #F8F9FA;
+      --card-bg: #FFFFFF;
+      --text: #1D2D44;
+      --radius: 16px;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .app-container {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 550px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 32px;
+      box-sizing: border-box;
+    }
+
+    .progress-bar-wrap {
+      background: #E9ECEF;
+      height: 8px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 10%;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .step-title {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .step-subtitle {
+      font-size: 14px;
+      color: #6C757D;
+      margin-bottom: 24px;
+    }
+
+    .grid-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .option-btn {
+      border: 2px solid #E9ECEF;
+      border-radius: var(--radius);
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      background: #FFFFFF;
+    }
+
+    .option-btn:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .option-btn.selected {
+      border-color: var(--primary);
+      background-color: #F0F7F4;
+      color: var(--primary);
+    }
+
+    .btn-next {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 16px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn-next:hover {
+      background-color: var(--accent);
+    }
+  </style>
 </head>
 <body>
 
-    <main class="app-container">
-        <!-- BARRA DI AVANZAMENTO -->
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        
-        <!-- SLIDE 1: Welcome -->
-        <section class="slide active" id="slide-1">
-            <div class="content">
-                <h1>Ciao, io sono <br><span class="highlight">Visito!</span> 👋</h1>
-                <p>Il tuo personal planner di viaggio intelligente.</p>
-            </div>
-            <button class="btn-primary" onclick="nextSlide(2)">Avanti ➔</button>
-        </section>
+<div class="app-container">
+  <div class="progress-bar-wrap">
+    <div class="progress-bar" id="pBar"></div>
+  </div>
+  
+  <div id="wizardStep">
+    <div class="step-title" id="stepTitle">Con quali mezzi preferisci spostarti?</div>
+    <div class="step-subtitle" id="stepSub">Seleziona una o più opzioni (Step 1 di 10)</div>
 
-        <!-- SLIDE 2: Value Prop -->
-        <section class="slide" id="slide-2">
-            <div class="content">
-                <h2>Esperienze uniche, <br>zero tempo sprecato ✨</h2>
-                <p>Creo itinerari su misura per te in pochissimi secondi.</p>
-            </div>
-            <button class="btn-primary" onclick="nextSlide(3)">Prosegui ➔</button>
-        </section>
+    <div class="grid-options" id="optionsContainer">
+      <div class="option-btn" onclick="toggleSelect(this)">✈️ Aereo</div>
+      <div class="option-btn" onclick="toggleSelect(this)">🚆 Treno</div>
+      <div class="option-btn" onclick="toggleSelect(this)">🚗 Auto propria / Noleggio</div>
+      <div class="option-btn" onclick="toggleSelect(this)">🚌 Mezzi Pubblici</div>
+    </div>
 
-        <!-- SLIDE 3: CTA -->
-        <section class="slide" id="slide-3">
-            <div class="content">
-                <h2>Pronto a pianificare la tua prossima avventura? 🚀</h2>
-            </div>
-            <button class="btn-cta" onclick="nextSlide(4)">Iniziamo!</button>
-        </section>
+    <button class="btn-next" onclick="nextStep()">Continua ➔</button>
+  </div>
+</div>
 
-        <!-- SLIDE 4: Destinazione -->
-        <section class="slide" id="slide-4">
-            <div class="content">
-                <h2>Dove andrai? 🌍</h2>
-                <div class="input-container">
-                    <input type="text" id="destinazione" class="custom-input" placeholder="Es. Roma, Parigi, Tokyo...">
-                </div>
-            </div>
-            <button class="btn-primary" onclick="confirmDestination()">Conferma ➔</button>
-        </section>
+<script>
+  let currentStep = 1;
+  const totalSteps = 10;
 
-        <!-- SLIDE 5: Trasporto -->
-        <section class="slide" id="slide-5">
-            <div class="content">
-                <h2>Come ci arriverai? 🚀</h2>
-                <div class="options-grid">
-                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">
-                        <span class="icon">✈️</span> Aereo
-                    </button>
-                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">
-                        <span class="icon">🚆</span> Treno
-                    </button>
-                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">
-                        <span class="icon">🚗</span> Auto
-                    </button>
-                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">
-                        <span class="icon">🚌</span> Bus / Altro
-                    </button>
-                </div>
-            </div>
-            <button class="btn-primary" onclick="nextSlide(6)">Avanti ➔</button>
-        </section>
+  function toggleSelect(element) {
+    element.classList.toggle('selected');
+  }
 
-        <!-- SLIDE 6: Con chi andrai? -->
-        <section class="slide" id="slide-6">
-            <div class="content">
-                <h2>Con chi andrai? 👥</h2>
-                <p class="sub-text">Seleziona tutte le opzioni desiderate:</p>
-                <div class="options-grid">
-                    <button class="option-card" onclick="toggleMulti(this)">
-                        <span class="icon">👤</span> Da solo/a
-                    </button>
-                    <button class="option-card" onclick="toggleMulti(this)">
-                        <span class="icon">👩‍❤️‍👨</span> In coppia
-                    </button>
-                    <button class="option-card" onclick="toggleMulti(this)">
-                        <span class="icon">👨‍👩‍👧‍👦</span> In famiglia
-                    </button>
-                    <button class="option-card" onclick="toggleMulti(this)">
-                        <span class="icon">🥳</span> Con amici
-                    </button>
-                </div>
-            </div>
-            <button class="btn-primary" onclick="nextSlide(7)">Avanti ➔</button>
-        </section>
+  function nextStep() {
+    if (currentStep < totalSteps) {
+      currentStep++;
+      document.getElementById('pBar').style.width = (currentStep / totalSteps * 100) + '%';
+      
+      if (currentStep === 2) {
+        document.getElementById('stepTitle').innerText = "Che tipo di alloggio preferisci?";
+        document.getElementById('stepSub').innerText = "Scegli l'atmosfera per il soggiorno (Step 2 di 10)";
+        document.getElementById('optionsContainer').innerHTML = `
+          <div class="option-btn" onclick="toggleSelect(this)">🏨 Hotel</div>
+          <div class="option-btn" onclick="toggleSelect(this)">🏡 B&B / Appartamento</div>
+          <div class="option-btn" onclick="toggleSelect(this)">🌿 Agriturismo</div>
+          <div class="option-btn" onclick="toggleSelect(this)">✨ Resort / Luxury</div>
+        `;
+      }
+    } else {
+      alert("Configurazione completata! Visito sta generando il tuo itinerario...");
+    }
+  }
+</script>
 
-        <!-- SLIDE 7: Giorni -->
-        <section class="slide" id="slide-7">
-            <div class="content">
-                <h2>Quanti giorni avrai a disposizione? 📅</h2>
-                <div class="input-container">
-                    <input type="number" id="giorni" class="custom-input" placeholder="Inserisci il numero di giorni...">
-                </div>
-            </div>
-            <button class="btn-primary" onclick="nextSlide(8)">Avanti ➔</button>
-        </section>
-
-        <!-- SLIDE 8: Interessi (MAX 4) -->
-        <section class="slide" id="slide-8">
-            <div class="content">
-                <h2>Quali sono i tuoi interessi? 🎭</h2>
-                <p class="sub-text">Scegli fino a <strong>massimo 4 interessi</strong>:</p>
-                <div class="options-grid">
-                    <button class="option-card" onclick="toggleMaxFour(this)">
-                        <span class="icon">🏛️</span> Cultura & Musei
-                    </button>
-                    <button class="option-card" onclick="toggleMaxFour(this)">
-                        <span class="icon">🍕</span> Cibo & Vino
-                    </button>
-                    <button class="option-card" onclick="toggleMaxFour(this)">
-                        <span class="icon">🌲</span> Natura
-                    </button>
-                    <button class="option-card" onclick="toggleMaxFour(this)">
-                        <span class="icon">💆‍♀️</span> Relax & Spa
-                    </button>
-                    <button class="option-card" onclick="toggleMaxFour(this)">
-                        <span class="icon">🛍️</span> Shopping
-                    </button>
-                    <button class="option-card" onclick="toggleMaxFour(this)">
-                        <span class="icon">🍸</span> Vita Notturna
-                    </button>
-                </div>
-            </div>
-            <button class="btn-primary" onclick="nextSlide(9)">Avanti ➔</button>
-        </section>
-
-        <!-- SLIDE 9: Esigenze Extra -->
-        <section class="slide" id="slide-9">
-            <div class="content">
-                <h2>Esigenze extra o note 🔍</h2>
-                <p class="sub-text">Scrivi eventuali allergie, ritmi o dettagli utili:</p>
-                <div class="input-container">
-                    <input type="text" id="esigenze" class="custom-input" placeholder="Es. celiachia, ritmo rilassato...">
-                </div>
-            </div>
-            <button class="btn-primary" onclick="startAdBreak()">Genera Itinerario ✨</button>
-        </section>
-
-        <!-- SLIDE 10: Ad Break -->
-        <section class="slide" id="slide-ad">
-            <div class="content">
-                <h2>Visito sta preparando il tuo viaggio... 🧠</h2>
-                <div style="width: 100%; height: 160px; background: rgba(0,0,0,0.3); border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(255,255,255,0.3);">
-                    <p>📢 Spazio Pubblicitario</p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <script src="script.js"></script>
 </body>
 </html>
