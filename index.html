@@ -2,23 +2,26 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visito - Il tuo Assistente di Viaggio AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Visito - Personal Planner</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Font Google per uno stile moderno e pulito -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <main class="app-container">
+        <!-- BARRA DI AVANZAMENTO -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
         
         <!-- SLIDE 1: Welcome -->
         <section class="slide active" id="slide-1">
             <div class="content">
-                <h1>Ciao, io sono <span class="highlight">Visito!</span> 👋</h1>
+                <h1>Ciao, io sono <br><span class="highlight">Visito!</span> 👋</h1>
                 <p>Il tuo personal planner di viaggio intelligente.</p>
-                <button class="btn-primary" onclick="nextSlide(2)">Avanti ➔</button>
             </div>
+            <button class="btn-primary" onclick="nextSlide(2)">Avanti ➔</button>
         </section>
 
         <!-- SLIDE 2: Value Prop -->
@@ -26,109 +29,133 @@
             <div class="content">
                 <h2>Esperienze uniche, <br>zero tempo sprecato ✨</h2>
                 <p>Creo itinerari su misura per te in pochissimi secondi.</p>
-                <button class="btn-primary" onclick="nextSlide(3)">Prosegui ➔</button>
             </div>
+            <button class="btn-primary" onclick="nextSlide(3)">Prosegui ➔</button>
         </section>
 
         <!-- SLIDE 3: CTA -->
         <section class="slide" id="slide-3">
             <div class="content">
                 <h2>Pronto a pianificare la tua prossima avventura? 🚀</h2>
-                <button class="btn-cta" onclick="nextSlide(4)">Iniziamo!</button>
             </div>
+            <button class="btn-cta" onclick="nextSlide(4)">Iniziamo!</button>
         </section>
 
-        <!-- SLIDE 4: Destinazione (Risposta Unica) -->
+        <!-- SLIDE 4: Destinazione -->
         <section class="slide" id="slide-4">
             <div class="content">
                 <h2>Dove andrai? 🌍</h2>
                 <div class="input-container">
-                    <input type="text" id="destinazione" class="custom-input" placeholder="Scrivi qui la tua destinazione...">
+                    <input type="text" id="destinazione" class="custom-input" placeholder="Es. Roma, Parigi, Tokyo...">
                 </div>
-                <button class="btn-primary" onclick="confirmDestination()">Conferma</button>
             </div>
+            <button class="btn-primary" onclick="confirmDestination()">Conferma ➔</button>
         </section>
 
-        <!-- SLIDE 5: Trasporto (Risposta Unica) -->
+        <!-- SLIDE 5: Trasporto -->
         <section class="slide" id="slide-5">
             <div class="content">
-                <h2>Come ci arriverai? ✈️🚗🚆</h2>
-                <div class="options-grid single-select">
-                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">Aereo</button>
-                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">Treno</button>
-                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">Auto</button>
-                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">Bus / Altro</button>
+                <h2>Come ci arriverai? 🚀</h2>
+                <div class="options-grid">
+                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">
+                        <span class="icon">✈️</span> Aereo
+                    </button>
+                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">
+                        <span class="icon">🚆</span> Treno
+                    </button>
+                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">
+                        <span class="icon">🚗</span> Auto
+                    </button>
+                    <button class="option-card" onclick="selectSingle(this, 'trasporto')">
+                        <span class="icon">🚌</span> Bus / Altro
+                    </button>
                 </div>
-                <p class="hint">Fai doppio clic o seleziona e premi avanti</p>
-                <button class="btn-primary" onclick="nextSlide(6)">Avanti ➔</button>
             </div>
+            <button class="btn-primary" onclick="nextSlide(6)">Avanti ➔</button>
         </section>
 
-        <!-- SLIDE 6: Con chi andrai? (Multipla ILLIMITATA) -->
+        <!-- SLIDE 6: Con chi andrai? -->
         <section class="slide" id="slide-6">
             <div class="content">
                 <h2>Con chi andrai? 👥</h2>
-                <p class="sub-text">Puoi selezionare tutte le opzioni che desideri:</p>
-                <div class="options-grid multi-select">
-                    <button class="option-card" onclick="toggleMulti(this)">Da solo/a</button>
-                    <button class="option-card" onclick="toggleMulti(this)">In coppia</button>
-                    <button class="option-card" onclick="toggleMulti(this)">In famiglia</button>
-                    <button class="option-card" onclick="toggleMulti(this)">Con amici</button>
-                    <button class="option-card" onclick="toggleMulti(this)">Con animali</button>
+                <p class="sub-text">Seleziona tutte le opzioni desiderate:</p>
+                <div class="options-grid">
+                    <button class="option-card" onclick="toggleMulti(this)">
+                        <span class="icon">👤</span> Da solo/a
+                    </button>
+                    <button class="option-card" onclick="toggleMulti(this)">
+                        <span class="icon">👩‍❤️‍👨</span> In coppia
+                    </button>
+                    <button class="option-card" onclick="toggleMulti(this)">
+                        <span class="icon">👨‍👩‍👧‍👦</span> In famiglia
+                    </button>
+                    <button class="option-card" onclick="toggleMulti(this)">
+                        <span class="icon">🥳</span> Con amici
+                    </button>
                 </div>
-                <button class="btn-primary" onclick="nextSlide(7)">Avanti ➔</button>
             </div>
+            <button class="btn-primary" onclick="nextSlide(7)">Avanti ➔</button>
         </section>
 
-        <!-- SLIDE 7: Quanti giorni? (Multipla / Libera) -->
+        <!-- SLIDE 7: Giorni -->
         <section class="slide" id="slide-7">
             <div class="content">
                 <h2>Quanti giorni avrai a disposizione? 📅</h2>
                 <div class="input-container">
-                    <input type="number" id="giorni" class="custom-input" placeholder="Es. 3, 5, 7...">
+                    <input type="number" id="giorni" class="custom-input" placeholder="Inserisci il numero di giorni...">
                 </div>
-                <button class="btn-primary" onclick="nextSlide(8)">Avanti ➔</button>
             </div>
+            <button class="btn-primary" onclick="nextSlide(8)">Avanti ➔</button>
         </section>
 
-        <!-- SLIDE 8: Interessi (MAX 4 OPZIONI) -->
+        <!-- SLIDE 8: Interessi (MAX 4) -->
         <section class="slide" id="slide-8">
             <div class="content">
                 <h2>Quali sono i tuoi interessi? 🎭</h2>
                 <p class="sub-text">Scegli fino a <strong>massimo 4 interessi</strong>:</p>
-                <div class="options-grid max-4-select">
-                    <button class="option-card" onclick="toggleMaxFour(this)">Cultura & Musei</button>
-                    <button class="option-card" onclick="toggleMaxFour(this)">Cibo & Enogastronomia</button>
-                    <button class="option-card" onclick="toggleMaxFour(this)">Natura & Trekking</button>
-                    <button class="option-card" onclick="toggleMaxFour(this)">Relax & Spa</button>
-                    <button class="option-card" onclick="toggleMaxFour(this)">Shopping</button>
-                    <button class="option-card" onclick="toggleMaxFour(this)">Vita Notturna</button>
-                    <button class="option-card" onclick="toggleMaxFour(this)">Avventura</button>
+                <div class="options-grid">
+                    <button class="option-card" onclick="toggleMaxFour(this)">
+                        <span class="icon">🏛️</span> Cultura & Musei
+                    </button>
+                    <button class="option-card" onclick="toggleMaxFour(this)">
+                        <span class="icon">🍕</span> Cibo & Vino
+                    </button>
+                    <button class="option-card" onclick="toggleMaxFour(this)">
+                        <span class="icon">🌲</span> Natura
+                    </button>
+                    <button class="option-card" onclick="toggleMaxFour(this)">
+                        <span class="icon">💆‍♀️</span> Relax & Spa
+                    </button>
+                    <button class="option-card" onclick="toggleMaxFour(this)">
+                        <span class="icon">🛍️</span> Shopping
+                    </button>
+                    <button class="option-card" onclick="toggleMaxFour(this)">
+                        <span class="icon">🍸</span> Vita Notturna
+                    </button>
                 </div>
-                <button class="btn-primary" onclick="nextSlide(9)">Avanti ➔</button>
             </div>
+            <button class="btn-primary" onclick="nextSlide(9)">Avanti ➔</button>
         </section>
 
-        <!-- SLIDE 9: Esigenze Extra (Multipla / Libera ILLIMITATA) -->
+        <!-- SLIDE 9: Esigenze Extra -->
         <section class="slide" id="slide-9">
             <div class="content">
-                <h2>Esigenze extra o note particolari 🔍</h2>
-                <p class="sub-text">Puoi scrivere tutto quello che desideri (es. celiachia, accessibilità):</p>
+                <h2>Esigenze extra o note 🔍</h2>
+                <p class="sub-text">Scrivi eventuali allergie, ritmi o dettagli utili:</p>
                 <div class="input-container">
-                    <input type="text" id="esigenze" class="custom-input" placeholder="Scrivi qui le tue esigenze extra...">
+                    <input type="text" id="esigenze" class="custom-input" placeholder="Es. celiachia, ritmo rilassato...">
                 </div>
-                <button class="btn-primary" onclick="startAdBreak()">Genera Itinerario ✨</button>
             </div>
+            <button class="btn-primary" onclick="startAdBreak()">Genera Itinerario ✨</button>
         </section>
 
-        <!-- SLIDE 10: Ad Break (Pubblicità 20-30s) -->
+        <!-- SLIDE 10: Ad Break -->
         <section class="slide" id="slide-ad">
             <div class="content">
-                <h2>Visito sta preparando il tuo itinerario perfetto... 🧠</h2>
-                <div class="ad-box">
+                <h2>Visito sta preparando il tuo viaggio... 🧠</h2>
+                <div style="width: 100%; height: 160px; background: rgba(0,0,0,0.3); border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(255,255,255,0.3);">
                     <p>📢 Spazio Pubblicitario</p>
                 </div>
-                <div class="loader"></div>
             </div>
         </section>
 
