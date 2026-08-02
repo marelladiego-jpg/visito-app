@@ -3,163 +3,187 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visito - Assistente di Viaggio AI</title>
-  <style>
-    :root {
-      --primary: #2D6A4F;
-      --accent: #52B788;
-      --bg: #F8F9FA;
-      --card-bg: #FFFFFF;
-      --text: #1D2D44;
-      --radius: 16px;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-
-    .app-container {
-      background: var(--card-bg);
-      width: 100%;
-      max-width: 550px;
-      border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      padding: 32px;
-      box-sizing: border-box;
-    }
-
-    .progress-bar-wrap {
-      background: #E9ECEF;
-      height: 8px;
-      border-radius: 4px;
-      margin-bottom: 24px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 10%;
-      background: var(--primary);
-      transition: width 0.3s ease;
-    }
-
-    .step-title {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      color: var(--primary);
-    }
-
-    .step-subtitle {
-      font-size: 14px;
-      color: #6C757D;
-      margin-bottom: 24px;
-    }
-
-    .grid-options {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 28px;
-    }
-
-    .option-btn {
-      border: 2px solid #E9ECEF;
-      border-radius: var(--radius);
-      padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s ease;
-      background: #FFFFFF;
-    }
-
-    .option-btn:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    .option-btn.selected {
-      border-color: var(--primary);
-      background-color: #F0F7F4;
-      color: var(--primary);
-    }
-
-    .btn-next {
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      width: 100%;
-      padding: 16px;
-      border-radius: 30px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .btn-next:hover {
-      background-color: var(--accent);
-    }
-  </style>
+  <title>Visito - AI Travel Assistant</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="app-container">
-  <div class="progress-bar-wrap">
-    <div class="progress-bar" id="pBar"></div>
-  </div>
-  
-  <div id="wizardStep">
-    <div class="step-title" id="stepTitle">Con quali mezzi preferisci spostarti?</div>
-    <div class="step-subtitle" id="stepSub">Seleziona una o più opzioni (Step 1 di 10)</div>
+  <div id="app-container">
 
-    <div class="grid-options" id="optionsContainer">
-      <div class="option-btn" onclick="toggleSelect(this)">✈️ Aereo</div>
-      <div class="option-btn" onclick="toggleSelect(this)">🚆 Treno</div>
-      <div class="option-btn" onclick="toggleSelect(this)">🚗 Auto propria / Noleggio</div>
-      <div class="option-btn" onclick="toggleSelect(this)">🚌 Mezzi Pubblici</div>
+    <!-- SLIDE 1 -->
+    <div class="slide active" id="slide-1" style="background-image: url('assets/images/viaggio-cartelle..png');">
+      <div class="overlay">
+        <h2>Pianifica il tuo viaggio ideale</h2>
+        <div class="options-grid">
+          <button class="card-option" data-value="homeguy">
+            <img src="assets/images/homeguy.png" alt="Homeguy">
+          </button>
+        </div>
+      </div>
     </div>
 
-    <button class="btn-next" onclick="nextStep()">Continua ➔</button>
+    <!-- SLIDE 2 -->
+    <div class="slide" id="slide-2" style="background-image: url('assets/images/MSCcrociere-A1.png');">
+      <div class="overlay">
+        <h2>Chi sei o con chi viaggi?</h2>
+        <div class="options-grid">
+          <button class="card-option" data-value="school"><img src="assets/images/school.png" alt="School"></button>
+          <button class="card-option" data-value="solitguyguy"><img src="assets/images/Solitrugguy.png" alt="Solitrugguy"></button>
+          <button class="card-option" data-value="worker"><img src="assets/images/worker.png" alt="Worker"></button>
+          <button class="card-option" data-value="family2tuscany"><img src="assets/images/Family2tuscany.png" alt="Family 2 Tuscany"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide" id="slide-3" style="background-image: url('assets/images/BandieraEuropa.png');">
+      <div class="overlay">
+        <h2>Seleziona la tua area geografica</h2>
+        <!-- Altri bottoni/opzioni geografiche se necessarie -->
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide" id="slide-4" style="background-image: url('assets/images/Pianeta.mp4');">
+      <div class="overlay">
+        <h2>Dove vorresti andare?</h2>
+        <input type="text" id="destinazione-input" class="text-input" placeholder="Inserisci il nome della città o luogo...">
+        <button class="btn-confirm" onclick="nextSlide()">Conferma</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 (Sfondo Dinamico da Wikipedia) -->
+    <div class="slide" id="slide-5" style="background-image: url('assets/images/placeholder-wiki.jpg');">
+      <div class="overlay">
+        <h2>Con quale mezzo vuoi spostarti?</h2>
+        <div class="options-grid">
+          <button class="card-option" data-value="caravan"><img src="assets/images/Caravan-bus.png" alt="Caravan Bus"></button>
+          <button class="card-option" data-value="ryanair"><img src="assets/images/Ryanair-plane.png" alt="Aereo"></button>
+          <button class="card-option" data-value="train"><img src="assets/images/Train.png" alt="Treno"></button>
+          <button class="card-option" data-value="crociera"><img src="assets/images/crociera.png" alt="Crociera"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide" id="slide-6" style="background-image: url('assets/images/homecasa.png');">
+      <div class="overlay">
+        <h2>Dove desideri alloggiare?</h2>
+        <div class="options-grid">
+          <button class="card-option" data-value="motel"><img src="assets/images/motel.png" alt="Motel"></button>
+          <button class="card-option" data-value="crociera"><img src="assets/images/crociera.png" alt="Crociera"></button>
+          <button class="card-option" data-value="appartamento"><img src="assets/images/appartamento.png" alt="Appartamento"></button>
+          <button class="card-option" data-value="campeggio"><img src="assets/images/campeggio.png" alt="Campeggio"></button>
+          <button class="card-option" data-value="residence"><img src="assets/images/residence-bungalow.png" alt="Bungalow"></button>
+          <button class="card-option" data-value="hotel"><img src="assets/images/Hotel.png" alt="Hotel"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide" id="slide-7" style="background-image: url('assets/images/Family.png');">
+      <div class="overlay">
+        <h2>Con chi parti?</h2>
+        <div class="options-grid">
+          <button class="card-option" data-value="friends"><img src="assets/images/Friendinrome.png" alt="Amici"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide" id="slide-8" style="background-image: url('assets/images/wallwhite.png');">
+      <div class="overlay">
+        <h2>Quando vuoi partire?</h2>
+        <div class="date-container">
+          <label>Data Inizio: <input type="date" id="date-start" class="text-input"></label>
+          <label>Data Fine: <input type="date" id="date-end" class="text-input"></label>
+        </div>
+        <button class="btn-confirm" onclick="nextSlide()">Conferma Date</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 9 -->
+    <div class="slide" id="slide-9" style="background-image: url('assets/images/moneymoneymoney.jpeg');">
+      <div class="overlay">
+        <h2>Qual è il tuo budget (€)?</h2>
+        <input type="number" id="budget-input" class="text-input" placeholder="Es. 500">
+        <button class="btn-confirm" onclick="nextSlide()">Conferma Budget</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 10 -->
+    <div class="slide" id="slide-10" style="background-image: url('assets/images/montsinonwork.png');">
+      <div class="overlay">
+        <h2>Qual è il tuo ritmo di viaggio?</h2>
+        <div class="options-grid">
+          <button class="card-option" data-value="ritmo1"><img src="assets/images/ritmo1.png.png" alt="Ritmo 1"></button>
+          <button class="card-option" data-value="ritmo2"><img src="assets/images/ritmo2.png.png" alt="Ritmo 2"></button>
+          <button class="card-option" data-value="ritmo3"><img src="assets/images/ritmo3.png.png" alt="Ritmo 3"></button>
+          <button class="card-option" data-value="ritmo4"><img src="assets/images/ritmo4.png.png" alt="Ritmo 4"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11 -->
+    <div class="slide" id="slide-11" style="background-image: url('assets/images/libreria-scaffali.png');">
+      <div class="overlay">
+        <h2>Cosa ti interessa fare?</h2>
+        <div class="options-grid">
+          <button class="card-option" data-value="cibo"><img src="assets/images/napoli-pizza-pasta.png" alt="Cibo"></button>
+          <button class="card-option" data-value="lunapark"><img src="assets/images/lunapark.png" alt="Luna Park"></button>
+          <button class="card-option" data-value="cinema"><img src="assets/images/cine.png" alt="Cinema"></button>
+          <button class="card-option" data-value="foto"><img src="assets/images/photographer.png" alt="Fotografia"></button>
+          <button class="card-option" data-value="relax"><img src="assets/images/relax.png" alt="Relax"></button>
+          <button class="card-option" data-value="natura"><img src="assets/images/nature-and-river.png" alt="Natura"></button>
+          <button class="card-option" data-value="arte"><img src="assets/images/giocondadavinci-png.png" alt="Arte/Cultura"></button>
+          <button class="card-option" data-value="shopping"><img src="assets/images/shopping.png" alt="Shopping"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12 -->
+    <div class="slide" id="slide-12" style="background-image: url('assets/images/areaefrece.png');">
+      <div class="overlay">
+        <h2>Quali sono gli obiettivi principali del viaggio?</h2>
+        <textarea id="obiettivi-input" class="text-input" placeholder="Scrivi qui i tuoi obiettivi..."></textarea>
+        <button class="btn-confirm" onclick="nextSlide()">Conferma</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 13 -->
+    <div class="slide" id="slide-13" style="background-image: url('assets/images/esigenze.png');">
+      <div class="overlay">
+        <h2>Hai esigenze particolari? (Facoltativo)</h2>
+        <textarea id="esigenze-input" class="text-input" placeholder="Es. Accessibilità, dieta vegetariana..."></textarea>
+        <div class="btn-group">
+          <button class="btn-confirm" onclick="nextSlide()">Conferma</button>
+          <button class="btn-skip" onclick="nextSlide()">Salta</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 14 (Risultato Finale + Chat Visito) -->
+    <div class="slide" id="slide-14">
+      <div class="itinerary-container">
+        <h2>Il tuo Itinerario Personalizzato con Visito</h2>
+        <div id="itinerary-result" class="itinerary-box">
+          <p>Generazione dell'itinerario in corso da parte dell'IA Visito...</p>
+        </div>
+
+        <!-- Area Chat Interattiva -->
+        <div class="chat-container">
+          <h3>Chatta con Visito</h3>
+          <div id="chat-messages" class="chat-box"></div>
+          <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Chiedi modifiche o consigli a Visito...">
+            <button id="send-chat-btn">Invia</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
-</div>
 
-<script>
-  let currentStep = 1;
-  const totalSteps = 10;
-
-  function toggleSelect(element) {
-    element.classList.toggle('selected');
-  }
-
-  function nextStep() {
-    if (currentStep < totalSteps) {
-      currentStep++;
-      document.getElementById('pBar').style.width = (currentStep / totalSteps * 100) + '%';
-      
-      if (currentStep === 2) {
-        document.getElementById('stepTitle').innerText = "Che tipo di alloggio preferisci?";
-        document.getElementById('stepSub').innerText = "Scegli l'atmosfera per il soggiorno (Step 2 di 10)";
-        document.getElementById('optionsContainer').innerHTML = `
-          <div class="option-btn" onclick="toggleSelect(this)">🏨 Hotel</div>
-          <div class="option-btn" onclick="toggleSelect(this)">🏡 B&B / Appartamento</div>
-          <div class="option-btn" onclick="toggleSelect(this)">🌿 Agriturismo</div>
-          <div class="option-btn" onclick="toggleSelect(this)">✨ Resort / Luxury</div>
-        `;
-      }
-    } else {
-      alert("Configurazione completata! Visito sta generando il tuo itinerario...");
-    }
-  }
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
